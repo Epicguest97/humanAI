@@ -72,7 +72,7 @@ python recognize.py --weights best_dbnet.pt --source test_image.jpg
 - Develop an end-to-end pipeline combining layout recognition and OCR for seamless document processing.
 
 ## Authors
-Mehul AKushik    
+Mehul Kaushik    
 
 ## License
 This project is licensed under the MIT License.
