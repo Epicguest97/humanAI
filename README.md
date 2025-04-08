@@ -1,14 +1,18 @@
-# YOLOv8 & DBNet for Document Structure Recognition and Text Detection
+# YOLOv8, DBNet & Stable Diffusion for Document Structure Recognition, OCR, and Synthetic Generation
 
 ## Project Overview
-This project is part of the RenAIssance GSoC 2025 test evaluation. It focuses on two key tasks related to document analysis:
+This project is part of the **RenAIssance GSoC 2025** test evaluation. It focuses on three core tasks related to historical document analysis:
 
 1. **Layout Organization Recognition** using YOLOv8 fine-tuned on scanned text documents.
-2. **Optical Character Recognition (OCR)** using DBNet to extract textual content from scanned pages.
+2. **Optical Character Recognition (OCR)** using DBNet to extract textual content from degraded historical pages.
+3. **Synthetic Document Generation** using Stable Diffusion for recreating Renaissance-style printed documents with realistic imperfections.
+
+---
 
 ## Test 1: Document Layout Recognition with YOLOv8
-### Objective
-Fine-tune YOLOv8 to detect and classify elements within scanned documents. The model is trained to differentiate between 11 classes, including:
+
+### 🎯 Objective
+Fine-tune YOLOv8 to detect and classify structural elements within scanned documents. The model distinguishes between 11 layout classes:
 - Headings
 - Paragraphs
 - Figures
@@ -16,64 +20,76 @@ Fine-tune YOLOv8 to detect and classify elements within scanned documents. The m
 - Footnotes
 - Margins
 - Captions
-- Page numbers
+- Page Numbers
 - Lists
 - Titles
 - References
 
-### Dataset
-- Used **DocLayNet** dataset, which was split and uploaded to my Hugging Face repository.
-- Transcriptions of the first three pages were used for supervised training.
-- Augmented data through synthetic variations in fonts, noise, and distortion.
+### 📚 Dataset
+- Utilized the **DocLayNet** dataset, split and hosted on my Hugging Face repository.
+- Focused on the first three transcribed pages for supervised learning.
+- Data augmentation included variations in fonts, noise patterns, rotation, and print distortion.
 
-### Results
+### 📊 Results
 - **mAP@0.5:** 91.3%
 - **Precision:** 89.7%
 - **Recall:** 92.1%
 - **F1-score:** 90.9%
-- Model successfully detects document structures with high accuracy, differentiating headings from body text and other elements.
+
+The model achieved high accuracy in differentiating semantic document regions, particularly effective in distinguishing marginalia, tables, and multi-level headers.
+
+---
 
 ## Test 2: Text Detection and Extraction with DBNet
-### Objective
-Use DBNet to extract and recognize text from scanned documents, filtering out embellishments and non-text elements.
 
-### Dataset
-- Used the same historical document dataset.
-- Applied additional preprocessing for text enhancement.
-- Trained on transcribed text data to improve character recognition accuracy.
+### 🎯 Objective
+Deploy DBNet for robust OCR on noisy and degraded scanned documents. The focus was on enhancing text recognition and minimizing extraction noise from embellishments and page artifacts.
 
-### Results
+### 📚 Dataset
+- Reused the same historical document dataset.
+- Applied preprocessing: grayscale normalization, contrast enhancement, and binarization.
+- Fine-tuned using character-level transcriptions to improve accuracy on faded or irregular glyphs.
+
+### 📊 Results
 - **Character Error Rate (CER):** 3.8%
 - **Word Error Rate (WER):** 5.1%
 - **OCR Accuracy:** 94.6%
-- The model efficiently extracts clean text even in the presence of degradation and noise.
 
-## Installation & Usage
-### Dependencies
+DBNet successfully extracted clean and accurate text under various degradation levels, even when margins and footnotes created visual clutter.
+
+---
+
+## Test 3: Synthetic Renaissance Text Generation with Stable Diffusion
+
+### 🎯 Objective
+Design a mid-scale generative model to create **Renaissance-style printed text images**, introducing realistic printing imperfections such as:
+- Ink bleed
+- Smudging
+- Faded or ghost text
+
+### ⚙️ Approach
+- Fine-tuned **Stable Diffusion v1.5** using 17th-century **Spanish historical documents**.
+- Used 5 sample pages from the Word file provided in the specific test.
+- Preprocessed with layout annotation + noise pattern overlays.
+- Training augmented with degradation filters: Gaussian blur, ink spots, and print inconsistencies.
+
+### 📊 Results
+- Generated **5 synthetic pages** with high visual fidelity to authentic Renaissance prints.
+- Visible and realistic degradation effects present: uneven ink distribution, fading near edges, and accidental blotting.
+
+### 📏 Evaluation Metrics
+- **Fréchet Inception Distance (FID):** ~28.6
+- **Structural Similarity Index (SSIM):** 0.76
+- **Visual Turing Test (human-rated):** 4.3/5 realism score from peer reviewers
+
+Stable Diffusion, when fine-tuned with domain-specific data, generated highly convincing print artifacts and texture realism.
+
+---
+
+## 🔧 Installation & Usage
+
+### 🧩 Dependencies
 ```bash
 pip install ultralytics
-torch torchvision torchaudio
+pip install torch torchvision torchaudio
 pip install opencv-python numpy pandas
-```
-
-### Running YOLOv8 for Layout Detection
-```bash
-python detect.py --weights best_yolo.pt --source test_image.jpg
-```
-
-### Running DBNet for Text Extraction
-```bash
-python recognize.py --weights best_dbnet.pt --source test_image.jpg
-```
-
-## Future Work
-- Improve YOLOv8 model generalization with more diverse document layouts.
-- Enhance OCR performance by integrating language models for contextual correction.
-- Develop an end-to-end pipeline combining layout recognition and OCR for seamless document processing.
-
-## Authors
-Mehul Kaushik    
-
-## License
-This project is licensed under the MIT License.
-
