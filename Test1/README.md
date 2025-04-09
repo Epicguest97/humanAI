@@ -43,9 +43,3 @@ This project fine-tunes a YOLOv8 model to detect and classify structural compone
 (Add a few screenshots or prediction examples here)
 
 ## 🛠️ How to Run
-
-### 1. Clone Repo & Install Requirements
-```bash
-git clone https://github.com/your-username/layout-yolov8.git
-cd layout-yolov8
-pip install -r requirements.txt
